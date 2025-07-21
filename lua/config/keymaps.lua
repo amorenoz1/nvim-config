@@ -2,6 +2,10 @@ vim.g.mapleader = " "
 
 local map = vim.keymap.set
 local opts = { noremap = true, silent = true }
+map('n', '<F5>', ":lua require'dap'.continue()<CR>", { desc = "Start/Continue Debugging" })
+map('n', '<F10>', "lua require'dap'.step_over()<CR>" , { desc = "Step Over" })
+map('n', '<F11>', ":lua require'dap'.step_into()<CR>" , { desc = "Step Into" })
+map('n', '<F12>', ":lua require'dap'.step_out()<CR>" , { desc = "Step Out" })
 
 -- Telescope
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Find files", noremap = true, silent = true })
@@ -24,7 +28,8 @@ map("n", "<leader>li", vim.lsp.buf.implementation, { desc = "Go to implementatio
 map("n", "<leader>lt", vim.lsp.buf.type_definition, { desc = "Type definition", noremap = true, silent = true })
 map("n", "<leader>lh", vim.lsp.buf.hover, { desc = "Hover info", noremap = true, silent = true })
 map("n", "<leader>ls", vim.lsp.buf.signature_help, { desc = "Signature help", noremap = true, silent = true })
-map("n", "<leader>lf", function() vim.lsp.buf.format { async = true } end, { desc = "Format buffer", noremap = true, silent = true })
+map("n", "<leader>lf", function() vim.lsp.buf.format { async = true } end,
+    { desc = "Format buffer", noremap = true, silent = true })
 map("n", "<leader>ll", "<cmd>LspInfo<CR>", { desc = "LSP info", noremap = true, silent = true })
 
 -- Diagnostics
@@ -38,8 +43,8 @@ map("n", "<Tab>", "<cmd>BufferLineCycleNext<cr>", { desc = "Next buffer", norema
 map("n", "<S-Tab>", "<cmd>BufferLineCyclePrev<cr>", { desc = "Prev buffer", noremap = true, silent = true })
 map("n", "<leader>bd", function()
     local bufnr = vim.api.nvim_get_current_buf()
-    vim.cmd("BufferLineCycleNext")  -- go to next buffer
-    vim.cmd("bdelete " .. bufnr)    -- delete previous
+    vim.cmd("BufferLineCycleNext") -- go to next buffer
+    vim.cmd("bdelete " .. bufnr)   -- delete previous
 end, { desc = "Smart close current buffer", noremap = true, silent = true })
 
 map("n", "<leader>bo", "<cmd>BufferLineCloseOthers<cr>", { desc = "Close other buffers", noremap = true, silent = true })
@@ -56,4 +61,3 @@ map("n", "<leader>do", "<cmd>lua require'dap'.step_out()<CR>", { desc = "Step Ou
 map("n", "<leader>db", "<cmd>lua require'dap'.toggle_breakpoint()<CR>", { desc = "Toggle Breakpoint" })
 map("n", "<leader>dr", "<cmd>lua require'dap'.repl.open()<CR>", { desc = "Open Debug REPL" })
 map("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<CR>", { desc = "Toggle DAP UI" })
-

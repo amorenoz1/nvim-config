@@ -1,4 +1,11 @@
 return {
+    {
+        'nvim-telescope/telescope-ui-select.nvim',
+        dependencies = { 'nvim-telescope/telescope.nvim' },
+        config = function()
+            require('telescope').load_extension('ui-select')
+        end
+    },
     -- DAP Core + UI
     {
         "mfussenegger/nvim-dap",
@@ -6,22 +13,41 @@ return {
             local dap = require("dap")
 
             -- Optional C++ example:
-            dap.adapters.cppdbg = {
-                id = 'cppdbg',
+            dap.adapters.lldb = {
                 type = 'executable',
-                command = vim.fn.stdpath("data") .. "/mason/packages/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+                command = 'lldb-dap', -- or the full path if needed
+                name = "lldb"
             }
 
             dap.configurations.cpp = {
                 {
-                    name = "Launch file",
-                    type = "cppdbg",
+                    name = "Launch C++ file (lldb)",
+                    type = "lldb",
                     request = "launch",
                     program = function()
-                        return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
                     end,
-                    cwd = "${workspaceFolder}",
+                    cwd = '${workspaceFolder}',
                     stopOnEntry = true,
+                    args = {},
+
+                    runInTerminal = false,
+                },
+            }
+
+            dap.configurations.c = {
+                {
+                    name = "Launch C++ file (lldb)",
+                    type = "lldb",
+                    request = "launch",
+                    program = function()
+                        return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+                    end,
+                    cwd = '${workspaceFolder}',
+                    stopOnEntry = true,
+                    args = {},
+
+                    runInTerminal = false,
                 },
             }
         end
@@ -102,13 +128,10 @@ return {
         dependencies = {
             -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
             "MunifTanjim/nui.nvim",
-            -- OPTIONAL:
-            --   `nvim-notify` is only needed, if you want to use the notification view.
-            --   If not available, we use `mini` as the fallback
-            "rcarriga/nvim-notify",
         },
         config = function()
             require("noice").setup({
+                background_color = "#000000",
                 lsp = {
                     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
                     override = {
@@ -131,13 +154,19 @@ return {
 
     -- Theme
     {
-        "vague2k/vague.nvim",
+        'projekt0n/github-nvim-theme',
+        name = 'github-theme-dark',
+        lazy = false,    -- make sure we load this during startup if it is your main colorscheme
+        priority = 1000, -- make sure to load this before all the other start plugins
         config = function()
-            require("vague").setup({
-                -- optional configuration here
+            require('github-theme').setup({
+                options = {
+                    transparent = true,
+                }
             })
-            vim.cmd("colorscheme vague")
-        end
+
+            vim.cmd('colorscheme github_dark_default')
+        end,
     },
     -- UI
     { "nvim-lualine/lualine.nvim", config = true },
@@ -174,7 +203,8 @@ return {
                 options = {
                     mode = "buffers",
                     diagnostics = "nvim_lsp",
-                    separator_style = "slant",
+                    separator_style = "thin",
+                    transparent = true,
                     show_buffer_close_icons = true,
                     show_close_icon = false,
                     offsets = {
@@ -218,7 +248,17 @@ return {
             local lspconfig = require("lspconfig")
 
             -- Example configuring clangd with default settings
-            lspconfig.clangd.setup({})
+            lspconfig.clangd.setup({
+                cmd = {
+                    "clangd",
+                    "--background-index",          -- Enable background indexing (recommended)
+                    "--clang-tidy",                -- Run clang-tidy checks
+                    "--completion-style=detailed", -- Show detailed completion info
+                    "--header-insertion=iwyu",     -- Intelligent header insertion/removal
+                    "--pch-storage=memory",        -- Faster precompiled header storage
+                    "--cross-file-rename=true"     -- Enable rename across files
+                }
+            })
             lspconfig.pyright.setup({})
             lspconfig.jdtls.setup({})
             lspconfig.bashls.setup({})

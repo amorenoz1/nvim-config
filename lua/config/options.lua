@@ -4,20 +4,20 @@ vim.g.mapleader = " "
 local opt = vim.opt
 
 -- UI/Editor behavior
-opt.number = true             -- Show line numbers
-opt.relativenumber = true     -- Relative line numbers
-opt.cursorline = true         -- Highlight current line
-opt.signcolumn = "yes"        -- Always show the sign column
-opt.scrolloff = 24            -- Keep 24 lines above/below cursor
-opt.sidescrolloff = 8         -- Horizontal context
+opt.number = true         -- Show line numbers
+opt.relativenumber = true -- Relative line numbers
+opt.cursorline = false    -- Highlight current line
+opt.signcolumn = "yes"    -- Always show the sign column
+opt.scrolloff = 24        -- Keep 24 lines above/below cursor
+opt.sidescrolloff = 8     -- Horizontal context
 
 -- Cursor shape in all modes (block style)
 opt.guicursor = {
-  "n-v-c:block",       -- Normal, visual, command-line: block
-  "i-ci-ve:block",     -- Insert, insert command-line: block
-  "r-cr:block",        -- Replace modes: block
-  "o:hor50",           -- Operator-pending: horizontal bar
-  "sm:block-blinkwait175-blinkon150-blinkoff150"
+    "n-v-c:block",   -- Normal, visual, command-line: block
+    "i-ci-ve:block", -- Insert, insert command-line: block
+    "r-cr:block",    -- Replace modes: block
+    "o:hor50",       -- Operator-pending: horizontal bar
+    "sm:block-blinkwait175-blinkon150-blinkoff150"
 }
 
 -- Clipboard
@@ -33,7 +33,7 @@ opt.autoindent = true
 -- Search
 opt.ignorecase = true
 opt.smartcase = true
-opt.hlsearch = false 
+opt.hlsearch = false
 opt.incsearch = true
 
 -- Appearance
