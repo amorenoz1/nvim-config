@@ -1,5 +1,7 @@
 -- Leader key must be set before plugins
 vim.g.mapleader = " "
+vim.g.maplocalleader = "\\"
+vim.o.guifont = "BigBlueTermPlus Nerd Font:h12" -- text below applies for VimScript
 
 local opt = vim.opt
 
